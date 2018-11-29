@@ -17,12 +17,13 @@ let mainWindow;
   log.info('App starting...');
 
 //set environment to production to remove dev tools
-process.env.NODE_ENV = 'production';
+//process.env.NODE_ENV = 'production';
 
 function createWindow() {
-  autoUpdater.checkForUpdates();
   
   mainWindow = new BrowserWindow({width: 900, height: 680});
+
+  createDefaultWindow();
  
   mainWindow.loadURL(
 		isDev
@@ -30,7 +31,12 @@ function createWindow() {
 			: `file://${path.join(__dirname, '../build/index.html')}`,
   );
     
-  mainWindow.toggleDevTools();
+  if(isDev) 
+    mainWindow.toggleDevTools();
+  else
+    autoUpdater.checkForUpdates();
+
+
   // Build menu from template
   const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
   // add developer tools item if not in production
@@ -43,12 +49,21 @@ function createWindow() {
 
   //Quit app when main window closed
   mainWindow.on('closed', function(){
+    mainWindow = null;
     app.quit();
   })
+  
+//   if (isDev) {
+//     autoUpdater.updateConfigPath = path.join(__dirname, '/dist/win-unpacked/resources/app-update.yml');
+// }
+
+// if (isDev) {
+//   autoUpdater.updateConfigPath = path.join(__dirname, 'app-update.yml');
+// }
 
 }
 
-app.on('ready', createWindow);
+app.on('ready',  createWindow);
 
 
 app.on('window-all-closed', () => {
@@ -57,10 +72,28 @@ app.on('window-all-closed', () => {
   }
 });
 
+let win;
+
+function sendStatusToWindow(text) {
+  log.info(text);
+  win.webContents.send('message', text);
+}
+
+function createDefaultWindow() {
+  win = new BrowserWindow();
+  win.webContents.openDevTools();
+  win.on('closed', () => {
+    win = null;
+  });
+  win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
+  return win;
+}
+
 app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow();
-    }
+       createWindow();
+       }
+       
 
   //-------------------------------------------------------------------
 // Auto updates
@@ -69,24 +102,6 @@ app.on('activate', () => {
 // https://github.com/electron-userland/electron-builder/wiki/Auto-Update#events
 //
 //-------------------------------------------------------------------
-
-// let win;
-
-// function sendStatusToWindow(text) {
-//   log.info(text);
-//   win.webContents.send('message', text);
-// }
-// function createDefaultWindow() {
-//   win = new BrowserWindow();
-//   win.webContents.openDevTools();
-//   win.on('closed', () => {
-//     win = null;
-//   });
-//   win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
-//   return win;
-// }
-
-
 
 autoUpdater.on('checking-for-update', () => {
   console.log('checking for updates');
