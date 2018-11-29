@@ -66,11 +66,6 @@ app.on('activate', () => {
 //
 //-------------------------------------------------------------------
 
-
-// app.on('ready', function()  {
-//   autoUpdater.checkForUpdates();
-// });
-
 autoUpdater.on('checking-for-update', () => {
   console.log('checking for updates');
 })
