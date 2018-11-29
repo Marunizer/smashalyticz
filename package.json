@@ -30,9 +30,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "pack": "electron-builder --dir",
-    "dist": "npx build --x64  --win -c.extraMetadata.main=build/electron.js",
+    "dist": "electron-builder --x64  --win -c.extraMetadata.main=build/electron.js",
     "gh-publish": "npx build --x64  --win --c.extraMetadata.main=build/electron.js -p always"
-  }, "description": "best app NA",
+  }, 
+  "description": "best app NA",
   "main": "public/electron.js",
 	"homepage": "./",
 	"keywords": [

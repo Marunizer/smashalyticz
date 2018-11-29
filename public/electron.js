@@ -8,16 +8,16 @@ const {app, BrowserWindow, Menu, ipcMain} = electron;
 
 let mainWindow;
 
+ //-------------------------------------------------------------------
+  // Logging
+  // makes debugging easier 
+  //-------------------------------------------------------------------
+  autoUpdater.logger = log;
+  autoUpdater.logger.transports.file.level = 'info';
+  log.info('App starting...');
+
 //set environment to production to remove dev tools
 process.env.NODE_ENV = 'production';
-
-//-------------------------------------------------------------------
-// Logging
-// makes debugging easier 
-//-------------------------------------------------------------------
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
-log.info('App starting...');
 
 function createWindow() {
   autoUpdater.checkForUpdates();
@@ -28,14 +28,18 @@ function createWindow() {
 		isDev
 			? 'http://localhost:3000'
 			: `file://${path.join(__dirname, '../build/index.html')}`,
-	);
+  );
+    
   mainWindow.toggleDevTools();
- // Build menu from template
- const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+  // Build menu from template
+  const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
   // add developer tools item if not in production
 
- // Insert menu
- Menu.setApplicationMenu(mainMenu);
+  // Insert menu
+  Menu.setApplicationMenu(mainMenu);
+
+  //autoUpdater.checkForUpdates();
+  //autoUpdater.checkForUpdatesAndNotify()
 
   //Quit app when main window closed
   mainWindow.on('closed', function(){
@@ -56,7 +60,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
-  }
+    }
 
   //-------------------------------------------------------------------
 // Auto updates
@@ -66,30 +70,57 @@ app.on('activate', () => {
 //
 //-------------------------------------------------------------------
 
+// let win;
+
+// function sendStatusToWindow(text) {
+//   log.info(text);
+//   win.webContents.send('message', text);
+// }
+// function createDefaultWindow() {
+//   win = new BrowserWindow();
+//   win.webContents.openDevTools();
+//   win.on('closed', () => {
+//     win = null;
+//   });
+//   win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
+//   return win;
+// }
+
+
+
 autoUpdater.on('checking-for-update', () => {
   console.log('checking for updates');
+  sendStatusToWindow('Checking for update...');
 })
 
 autoUpdater.on('update-available', (info) => {
   console.log('Update available');
   console.log('Version : ', info.version);
   console.log('Release Date: ', info.releaseDate);
+  sendStatusToWindow('Update available.');
 })
 
 autoUpdater.on('update-not-available', (info) => {
-  console.log('current version is up to date...')
+  console.log('current version is up to date...');
+  sendStatusToWindow('Update not available.');
 })
 
 autoUpdater.on('error', (err) => {
-  console.log('ERROR UPDATING...', err)
+  console.log('ERROR UPDATING...', err);
+  sendStatusToWindow('Error in auto-updater. ' + err);
 })
 
 autoUpdater.on('download-progress', (progressObj) => {
   console.log('Progress: ${Math.floor(progressObj.percent)}');
+  let log_message = "Download speed: " + progressObj.bytesPerSecond;
+  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+  sendStatusToWindow(log_message);
 })
 
 autoUpdater.on('update-downloaded', (info) => {
   console.log('updated downloaded...')
+  sendStatusToWindow('Update downloaded');
   autoUpdater.quitAndInstall();  
 })
 
