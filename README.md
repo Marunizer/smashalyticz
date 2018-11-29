@@ -1,5 +1,22 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+### `yarn start`
+
+Launch development mode
+
+### `yarn build`
+
+### `yarn pack`
+
+### `yarn dist`
+
+Build and package distributible
+
+
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:

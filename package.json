@@ -1,18 +1,46 @@
 {
   "name": "smashalyticz",
+  "author": "marunizer <mendez1226@gmail.com>",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "concurrently": "^4.1.0",
+    "cross-env": "^5.1.4",
+    "electron-is-dev": "^1.0.1",
+    "electron-log": "^2.2.17",
+    "electron-packager": "^12.2.0",
+    "electron-updater": "^4.0.4",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-redux": "^5.1.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.1",
+    "redux": "^4.0.1",
+    "wait-on": "^3.2.0"
+  },
+  "devDependencies": {
+    "electron": "^3.0.10",
+    "electron-builder": "^20.36.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "yarn react-scripts start",
+    "start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+    "eject": "react-scripts eject",
+    "pack": "electron-builder --dir",
+    "build-all": "yarn build && yarn electron-builder",
+    "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Smashalyticz\"",
+    "dist": "npx build --x64  --win --c.extraMetadata.main=build/electron.js",
+    "gh-publish": "npx build --x64  --win  --c.extraMetadata.main=build/electron.js -p always"
+  }, "description": "best app NA",
+  "main": "public/electron.js",
+	"homepage": "./",
+	"keywords": [
+		"Example",
+		"React",
+		"Electron"
+	],
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -21,5 +49,65 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "build": {
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "marunizer"
+      }],
+		"appId": "com.marunizer.smashalyticz",
+		"compression": "normal",
+		"productName": "Smashalyticz",
+		"directories": {
+			"buildResources": "build",
+			"output": "dist"
+		},
+		"mac": {
+			"category": "com.marnunizer.app.category.type",
+			"icon": "assets/icons/mac/icon.icns",
+			"type": "distribution",
+			"target": [
+				"pkg",
+				"dmg",
+				"mas"
+			],
+			"publish": [
+				{
+					"provider": "github",
+					"owner": "marunizer"
+				}
+			]
+		},
+		"mas": {
+			"entitlements": "assets/entitlements.mas.plist",
+			"entitlementsInherit": "assets/entitlements.mas.inherit.plist",
+			"provisioningProfile": "assets/embedded.provisionprofile"
+		},
+		"win": {
+			"target": "nsis",
+			"icon": "assets/icons/win/icon.ico",
+			"publish": [
+				{
+					"provider": "github",
+          "owner": "marunizer"
+        }
+			]
+		},
+		"linux": {
+			"icon": "assets/icons/png/icon.png",
+			"target": [
+				"snap",
+				"AppImage"
+			],
+			"description": "best app",
+			"category": "Network;Feed",
+			"publish": [
+				{
+					"provider": "github",
+					"owner": "marunizer"
+				}
+			]
+		}
+	}
 }
