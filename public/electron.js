@@ -42,9 +42,9 @@ function createWindow() {
   // Insert menu
   Menu.setApplicationMenu(mainMenu);
 
-  autoUpdater.checkForUpdatesAndNotify()
+  //autoUpdater.checkForUpdatesAndNotify()
 
-  //autoUpdater.checkForUpdates();
+  autoUpdater.checkForUpdates();
   //autoUpdater.checkForUpdatesAndNotify()
 
   //Quit app when main window closed
@@ -139,7 +139,7 @@ autoUpdater.on('download-progress', (progressObj) => {
 autoUpdater.on('update-downloaded', (info) => {
   console.log('updated downloaded...')
   sendStatusToWindow('Update downloaded');
- // autoUpdater.quitAndInstall();  
+  autoUpdater.quitAndInstall();  
 })
 
 //  create menu template

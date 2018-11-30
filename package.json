@@ -3,7 +3,7 @@
   "author": "marunizer <mendez1226@gmail.com>",
   "repository": "https://github.com/Marunizer/smashalyticz.git",
   "license": "MIT",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "private": false,
   "dependencies": {
     "concurrently": "^4.1.0",
@@ -32,6 +32,7 @@
     "eject": "react-scripts eject",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --x64  --win -c.extraMetadata.main=build/electron.js",
+    "postinstall": "electron-builder install-app-deps",
     "gh-publish": "electron-builder --x64  --win --c.extraMetadata.main=build/electron.js -p always"
   }, 
   "description": "best app NA",
@@ -83,7 +84,13 @@
 		"win": {
 			"target": "nsis",
 			"icon": "assets/icons/win/icon.ico"
-		},
+    },
+    "nsis": {
+      "perMachine": false,
+      "oneClick": false,
+      "allowToChangeInstallationDirectory" : true,
+      "createDesktopShortcut" : true
+    },
 		"linux": {
 			"icon": "assets/icons/png/icon.png",
 			"target": [
