@@ -90,6 +90,35 @@ function createDefaultWindow() {
   return win;
 }
 
+//Handle create add window
+function createAddWindow(){
+  //create new window
+  addWindow = new BrowserWindow({
+   width: 300,
+   height: 200,
+   title: 'add Smash Characters to list'
+  });
+
+  //load html into the window
+  addWindow.loadURL(url.format({
+   pathname: path.join(__dirname, 'addWindow.html'),//currentDir/mainWindow.html
+   protocol: 'file',
+   slashes : true
+  }))//This is passing in file://dirname/path.html
+
+  //garbage collection
+  addWindow.on('close', function(){
+      addWindow = null;
+  })
+}
+
+//catch item: add
+ipcMain.on('item:add',function(e, item){
+console.log(item); //logs to terminal , in http logs to console
+mainWindow.webContents.send('item:add', item);
+addWindow.close();
+})
+
 app.on('activate', () => {
   if (mainWindow === null) {
        createWindow();
