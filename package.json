@@ -3,7 +3,7 @@
   "author": "marunizer <mendez1226@gmail.com>",
   "repository": "https://github.com/Marunizer/smashalyticz.git",
   "license": "MIT",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": false,
   "dependencies": {
     "concurrently": "^4.1.0",
