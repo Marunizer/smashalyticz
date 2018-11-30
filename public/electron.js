@@ -30,11 +30,9 @@ function createWindow() {
 			? 'http://localhost:3000'
 			: `file://${path.join(__dirname, '../build/index.html')}`,
   );
-    
+
   if(isDev) 
     mainWindow.toggleDevTools();
-  else
-    autoUpdater.checkForUpdates();
 
 
   // Build menu from template
@@ -43,6 +41,8 @@ function createWindow() {
 
   // Insert menu
   Menu.setApplicationMenu(mainMenu);
+
+  autoUpdater.checkForUpdatesAndNotify()
 
   //autoUpdater.checkForUpdates();
   //autoUpdater.checkForUpdatesAndNotify()
@@ -60,6 +60,7 @@ function createWindow() {
 // if (isDev) {
 //   autoUpdater.updateConfigPath = path.join(__dirname, 'app-update.yml');
 // }
+
 
 }
 
@@ -103,6 +104,8 @@ app.on('activate', () => {
 //
 //-------------------------------------------------------------------
 
+});
+
 autoUpdater.on('checking-for-update', () => {
   console.log('checking for updates');
   sendStatusToWindow('Checking for update...');
@@ -136,10 +139,8 @@ autoUpdater.on('download-progress', (progressObj) => {
 autoUpdater.on('update-downloaded', (info) => {
   console.log('updated downloaded...')
   sendStatusToWindow('Update downloaded');
-  autoUpdater.quitAndInstall();  
+ // autoUpdater.quitAndInstall();  
 })
-
-});
 
 //  create menu template
 const mainMenuTemplate = [

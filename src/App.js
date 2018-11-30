@@ -7,7 +7,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <p>
-            PLZ UPDATEEE
+            bout to update
           </p>
           <a
             className="App-link"
