@@ -1,5 +1,7 @@
 import React from 'react'
 
+//currently not being used
+
 const Challenges = ({challenges, deleteChallenge}) => {
     
     const challengesList = challenges.length ? (

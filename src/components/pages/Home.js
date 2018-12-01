@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
-//import axios from 'axios'
 import SmashBall from '../../assets/smash_ball.png'
-//could just use a fetch, but using axios instead
 import {connect} from 'react-redux'
+//import axios from 'axios'
 
 class Home extends Component {
 
+    //could just use a fetch, but using axios instead
     //mostly just here to show an example of fetching dynamic data from
     //an endpoint using axios (: ) //THIS IS NOT WITH REDUX
     // state = {

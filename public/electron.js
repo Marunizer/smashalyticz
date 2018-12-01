@@ -8,7 +8,7 @@ const {app, BrowserWindow, Menu, ipcMain} = electron;
 
 let mainWindow;
 
- //-------------------------------------------------------------------
+  //-------------------------------------------------------------------
   // Logging
   // makes debugging easier 
   //-------------------------------------------------------------------
@@ -16,13 +16,12 @@ let mainWindow;
   autoUpdater.logger.transports.file.level = 'info';
   log.info('App starting...');
 
-//set environment to production to remove dev tools
-//process.env.NODE_ENV = 'production';
 
 function createWindow() {
   
-  mainWindow = new BrowserWindow({width: 900, height: 680});
+  mainWindow = new BrowserWindow({width: 950, height: 680});
 
+  //for demo / testing auto-updater (:
   createDefaultWindow();
  
   mainWindow.loadURL(
@@ -31,64 +30,38 @@ function createWindow() {
 			: `file://${path.join(__dirname, '../build/index.html')}`,
   );
 
-  if(isDev) 
-    mainWindow.toggleDevTools();
-
-
-  // Build menu from template
-  const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
   // add developer tools item if not in production
+  if(isDev) 
+  {
+    mainWindow.toggleDevTools();
+    // Build menu from template
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
 
-  // Insert menu
-  Menu.setApplicationMenu(mainMenu);
+    // Insert menu
+    Menu.setApplicationMenu(mainMenu);
+  }
+    
 
-  //autoUpdater.checkForUpdatesAndNotify()
-
+  //start of app, check for an update!
+  //autoUpdater.checkForUpdatesAndNotify() //installs update when app is quit.
   autoUpdater.checkForUpdates();
-  //autoUpdater.checkForUpdatesAndNotify()
 
   //Quit app when main window closed
   mainWindow.on('closed', function(){
     mainWindow = null;
     app.quit();
   })
-  
-//   if (isDev) {
-//     autoUpdater.updateConfigPath = path.join(__dirname, '/dist/win-unpacked/resources/app-update.yml');
-// }
-
-// if (isDev) {
-//   autoUpdater.updateConfigPath = path.join(__dirname, 'app-update.yml');
-// }
-
 
 }
 
 app.on('ready',  createWindow);
 
-
+// Respect the OSX convention
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
-
-let win;
-
-function sendStatusToWindow(text) {
-  log.info(text);
-  win.webContents.send('message', text);
-}
-
-function createDefaultWindow() {
-  win = new BrowserWindow();
-  win.webContents.openDevTools();
-  win.on('closed', () => {
-    win = null;
-  });
-  win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
-  return win;
-}
 
 //Handle create add window
 function createAddWindow(){
@@ -96,12 +69,12 @@ function createAddWindow(){
   addWindow = new BrowserWindow({
    width: 300,
    height: 200,
-   title: 'add Smash Characters to list'
+   title: 'Log a name (:'
   });
 
   //load html into the window
   addWindow.loadURL(url.format({
-   pathname: path.join(__dirname, 'addWindow.html'),//currentDir/mainWindow.html
+   pathname: path.join(__dirname, '../src/windows/addWindow.html'),//currentDir/mainWindow.html
    protocol: 'file',
    slashes : true
   }))//This is passing in file://dirname/path.html
@@ -123,9 +96,10 @@ app.on('activate', () => {
   if (mainWindow === null) {
        createWindow();
        }
-       
+});
 
-  //-------------------------------------------------------------------
+
+//-------------------------------------------------------------------
 // Auto updates
 //
 // For details about these events, see the Wiki:
@@ -133,7 +107,22 @@ app.on('activate', () => {
 //
 //-------------------------------------------------------------------
 
-});
+let win;
+
+function sendStatusToWindow(text) {
+  log.info(text);
+  win.webContents.send('message', text);
+}
+
+function createDefaultWindow() {
+  win = new BrowserWindow();
+  win.webContents.openDevTools();
+  win.on('closed', () => {
+    win = null;
+  });
+  win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
+  return win;
+}
 
 autoUpdater.on('checking-for-update', () => {
   console.log('checking for updates');
@@ -157,6 +146,7 @@ autoUpdater.on('error', (err) => {
   sendStatusToWindow('Error in auto-updater. ' + err);
 })
 
+
 autoUpdater.on('download-progress', (progressObj) => {
   console.log('Progress: ${Math.floor(progressObj.percent)}');
   let log_message = "Download speed: " + progressObj.bytesPerSecond;
@@ -168,24 +158,28 @@ autoUpdater.on('download-progress', (progressObj) => {
 autoUpdater.on('update-downloaded', (info) => {
   console.log('updated downloaded...')
   sendStatusToWindow('Update downloaded');
-  autoUpdater.quitAndInstall();  
+  mainWindow.webContents.send('updateReady');
+})
+
+ipcMain.on("quitAndInstall", (event, arg) => {
+  autoUpdater.quitAndInstall();
 })
 
 //  create menu template
 const mainMenuTemplate = [
   {
-      label: 'File',
+      label: 'C00l Bar',
       submenu:[
           {
-              label : 'Add Item',
+              label : 'Log a name',
               click(){
                   createAddWindow();
               }
           },
           {
-              label : 'Clear Items',
+              label : 'check for updates',
               click(){
-                  mainWindow.webContents.send('item:clear');
+                autoUpdater.checkForUpdates();
               }
           },
           {
@@ -203,4 +197,23 @@ const mainMenuTemplate = [
 //if mac, add empty object to menu
 if(process.platform == 'darwin') {
   mainMenuTemplate.unshift({});
+}
+
+if(process.env.NODE_ENV !== 'production'){
+  mainMenuTemplate.push({
+      label : 'Dev Tools',
+      submenu: [
+          {
+              label : 'toggle devtools',
+              accelerator: process.platform == 'darwin' ? 'Command+I'  :
+              'Ctrl+I', // mac | windows
+              click(item,focusedWindow){
+                  focusedWindow.toggleDevTools();
+              }
+          },
+          {
+              role : 'reload'
+          }
+      ]
+  })
 }

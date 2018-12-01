@@ -5,8 +5,8 @@ import React from 'react'
 //this is to add general features to components 
 const Rainbow = (WrappedComponent) => {
 
-    const colors = ['pink', 'green', 'yellow', 'red', 'black'];
-    const randomColor = colors[Math.floor(Math.random() * 4)];
+    const colors = ['pink', 'green', 'yellow', 'red', 'black', 'blue'];
+    const randomColor = colors[Math.floor(Math.random() * 5)];
     const className =  randomColor + '-text';
 
     return(props) => {

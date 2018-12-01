@@ -26,6 +26,7 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
+    
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -37,5 +38,26 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <div style="margin-left:40px" >
+      <p id="ready2">...</p>
+      <button className="btn grey" id="ready" style="display: none;" onClick="ipcRenderer.send('quitAndInstall')">Click to Update</button>
+    </div>
+
+    <script>
+      const ipcRenderer = require('electron').ipcRenderer;
+      // wait for an updateReady message
+      ipcRenderer.on('updateReady', function(event, text) {
+          // change text and visibility of containers
+          var container = document.getElementById('ready');
+          container.innerHTML = "new version ready!";
+          container.style.display = "block";
+
+          var container2 = document.getElementById('ready2');
+          container2.innerHTML = "Update Available!";
+      })
+
+  </script>
+
   </body>
 </html>

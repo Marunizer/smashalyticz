@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link, NavLink, withRouter} from 'react-router-dom'
+import logo from '../assets/icon.png';
 
 const Navbar = () => {
     
@@ -9,13 +10,18 @@ const Navbar = () => {
     // }, 1500)
 
     return (//JSX
-        <nav className="nav-wrapper pink darken-0">
+        <nav className="nav-wrapper blue darken-4">
             <div className="container">
-                <a href="/" className="brand-logo">Smasherz</a>
-                <ul className="right">
+                <Link to="/" className="brand-logo right">Smasherz</Link>
+                <ul className="left">
                     <li><Link to="/">Home</Link> </li>
                     <li><NavLink to="/about">About</NavLink> </li>
                     <li><NavLink to="/contact">Contact</NavLink> </li>
+                </ul>
+                <ul className="center">
+                    <li> <Link to="/" className="brand-logo center">
+                        <img src={logo} alt="logo" height="42" width="42" align="center" />
+                    </Link></li>
                 </ul>
             </div>    
         </nav>

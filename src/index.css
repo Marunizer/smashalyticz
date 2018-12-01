@@ -25,3 +25,7 @@ code {
   overflow: hidden;
   padding-left: 80px;
 }
+
+.navbar img {
+  height: 10vmin;
+}

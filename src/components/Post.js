@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-//import axios from 'axios'
 import {connect} from 'react-redux';
 import { deletePost} from '../actions/PostActions'
+//import axios from 'axios'
 
 class Post extends Component {
 
-    
+    //was using this for an axios example, keeping to review
     // state = {
     //     post: null
     // }
@@ -22,7 +22,7 @@ class Post extends Component {
     // }
 
     handleClick = () => {
-        this.props.deletePost(this.props.posts  .id)
+        this.props.deletePost(this.props.posts.id)
         //re-direct to home page
         this.props.history.push('/')
     }

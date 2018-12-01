@@ -4,7 +4,7 @@ const Contact = () => {
     return (
         <div className="container">
             <h4 className="center">Contact</h4>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nobis nesciunt quis? Porro corrupti dolorem ipsum. Dolorem, necessitatibus delectus? Autem praesentium deleniti eum veritatis maiores, officia tenetur recusandae facere cupiditate.</p>
+            <p>call me, beep me, if u wanna reach me ;)</p>
         </div>
     )
 }

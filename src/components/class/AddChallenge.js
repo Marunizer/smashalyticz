@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+//currently not being used
+
 class AddChallenge extends Component {
     state ={
         content: ''
