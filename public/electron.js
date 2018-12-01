@@ -40,11 +40,12 @@ function createWindow() {
     // Insert menu
     Menu.setApplicationMenu(mainMenu);
   }
-    
-
-  //start of app, check for an update!
-  //autoUpdater.checkForUpdatesAndNotify() //installs update when app is quit.
-  autoUpdater.checkForUpdates();
+  else
+  {
+    //start of app, check for an update!
+    //autoUpdater.checkForUpdatesAndNotify() //installs update when app is quit.
+    autoUpdater.checkForUpdates();
+  }
 
   //Quit app when main window closed
   mainWindow.on('closed', function(){
@@ -62,35 +63,6 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
-
-//Handle create add window
-function createAddWindow(){
-  //create new window
-  addWindow = new BrowserWindow({
-   width: 300,
-   height: 200,
-   title: 'Log a name (:'
-  });
-
-  //load html into the window
-  addWindow.loadURL(url.format({
-   pathname: path.join(__dirname, '../src/windows/addWindow.html'),//currentDir/mainWindow.html
-   protocol: 'file',
-   slashes : true
-  }))//This is passing in file://dirname/path.html
-
-  //garbage collection
-  addWindow.on('close', function(){
-      addWindow = null;
-  })
-}
-
-//catch item: add
-ipcMain.on('item:add',function(e, item){
-console.log(item); //logs to terminal , in http logs to console
-mainWindow.webContents.send('item:add', item);
-addWindow.close();
-})
 
 app.on('activate', () => {
   if (mainWindow === null) {
@@ -170,12 +142,6 @@ const mainMenuTemplate = [
   {
       label: 'C00l Bar',
       submenu:[
-          {
-              label : 'Log a name',
-              click(){
-                  createAddWindow();
-              }
-          },
           {
               label : 'check for updates',
               click(){
