@@ -12,7 +12,9 @@ var userAgent = navigator.userAgent.toLowerCase();
 if (userAgent.indexOf(' electron/') > -1) {
    // Electron-specific code
    electron = window.require("electron") 
-  ipcRenderer = electron.ipcRenderer
+   ipcRenderer = electron.ipcRenderer
+
+//TODO: this is pretty uggo, instead control update button/text based on state
 
   // wait for an updateReady message
   ipcRenderer.on('updateReady', function(event, text) {
@@ -31,13 +33,19 @@ if (userAgent.indexOf(' electron/') > -1) {
   })
 }
 
-if(window.ipcRenderer){
-      
-}
-
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+
+    // this.state = {
+    //   buttonHidden: true
+    // }
+}
+
   render() {
+
+   //  const  hiddenStyle = this.buttonHidden ? {display: 'none'} : {display: 'block'}
 
     const setup = (
       <BrowserRouter>
@@ -58,12 +66,12 @@ class App extends Component {
         electron+react  
         <div>
           <p id="ready2">Version is up to date</p>
-          <button className="btn grey" id="ready"  onClick={()=>ipcRenderer.send('quitAndInstall')}>or Update now!</button>
+          <button className="btn grey" id="ready" style={{display: 'none'}}  onClick={()=>ipcRenderer.send('quitAndInstall')}>or Update now!</button>
         </div>
         
       </div>
       ) : (
-          <div>
+          <div >
         react only
         </div>
       )
