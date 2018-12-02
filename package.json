@@ -3,7 +3,7 @@
  "author": "marunizer <mendez1226@gmail.com>",
  "repository": "https://github.com/Marunizer/smashalyticz.git",
  "license": "MIT",
- "version": "0.9.5",
+ "version": "0.9.6",
  "private": false,
  "dependencies": {
   "concurrently": "^4.1.0",
@@ -88,11 +88,12 @@
    "icon": "assets/icons/win/icon.ico"
   },
   "nsisWeb": {
-    "artifactName": "${productName}.${ext}",
+    "artifactName": "${productName}-Setup-${version}.${ext}",
     "perMachine": true,
     "oneClick": false,
     "allowToChangeInstallationDirectory": true,
-    "createDesktopShortcut": true
+    "createDesktopShortcut": true,
+    "differentialPackage": true
 },
   "linux": {
    "icon": "assets/icons/png/icon.png",

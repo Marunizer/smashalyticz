@@ -43,8 +43,8 @@ function createWindow() {
   else
   {
     //start of app, check for an update!
-    //autoUpdater.checkForUpdatesAndNotify() //installs update when app is quit.
-    autoUpdater.checkForUpdates();
+    autoUpdater.checkForUpdatesAndNotify() //installs update when app is quit.
+    //autoUpdater.checkForUpdates();
   }
 
   //Quit app when main window closed
