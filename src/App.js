@@ -1,49 +1,45 @@
 import React, { Component } from 'react';
-// import Challenges from './components/functional/Challenges'
-// import AddChallenge from './components/class/AddChallenge'
 import Navbar from './components/Navbar'
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import Home from './components/pages/Home'
 import Contact from './components/pages/Contact'
 import About from './components/pages/About'
 import Post from './components/Post'
+var electron = null; 
+var ipcRenderer = null;
+
+var userAgent = navigator.userAgent.toLowerCase();
+if (userAgent.indexOf(' electron/') > -1) {
+   // Electron-specific code
+   electron = window.require("electron") 
+  ipcRenderer = electron.ipcRenderer
+
+  // wait for an updateReady message
+  ipcRenderer.on('updateReady', function(event, text) {
+      // change text and visibility of containers
+      var container = document.getElementById('ready');
+      container.style.display = "block";
+
+      var container2 = document.getElementById('ready2');
+      container2.innerHTML = "Update ready ! Will install automatically upon exiting smashalyticz";
+  })
+
+  ipcRenderer.on('updateAvailable', function(event, text) {
+
+      var container2 = document.getElementById('ready2');
+      container2.innerHTML = "new update available... downloading...";
+  })
+}
+
+if(window.ipcRenderer){
+      
+}
 
 class App extends Component {
 
-  //Tutorial stuff I had done, no longer relavent but keeping cause I wanna review it when I have time
-  // state = {
-  //   challenges: [
-  //       {id:1, content: 'Get a 30 hit or higher combo in training mode'},
-  //       {id:2, content: 'Get a 50 hit or higher combo in training mode'}
-  //   ]
-  // }
-  // deleteChallenge = (id) => {
-  //   console.log(id);
-  //   let challenges = this.state.challenges.filter(challenge => {
-  //     return challenge.id !== id //if id doesnt match do nothing, if id is the same, filter it out 
-  //   }); //non-destructive, doesnt alter array directly, returns a copy
-  //   this.setState({
-  //     challenges : challenges
-  //   })
-  // }
-  // addChallenge = (challenge) => {
-  //   console.log(challenge)
-  //   challenge.id = Math.random();
-  //                   //spread todo will go through eahc array item
-  //   let challenges = [...this.state.challenges, challenge]
-  //   this.setState({
-  //     challenges: challenges
-  //   })
-  //   //
-  //   {/* <div className="challenges-app container">
-  //           <h1 className="center blue-text">Challenges</h1>
-  //           <Challenges challenges={this.state.challenges} deleteChallenge={this.deleteChallenge}/>
-  //           <AddChallenge addChallenge={this.addChallenge}/>
-  //         </div> */}
-  // }
-
   render() {
-    return (
+
+    const setup = (
       <BrowserRouter>
         <div className="App">
           <Navbar/>
@@ -55,7 +51,30 @@ class App extends Component {
           </Switch>
         </div>
       </BrowserRouter>
+    )
+
+    const isElectron = (userAgent.indexOf(' electron/') > -1) ? (
+      <div>
+        electron+react  
+        <div>
+          <p id="ready2">Version is up to date</p>
+          <button className="btn grey" id="ready"  onClick={()=>ipcRenderer.send('quitAndInstall')}>or Update now!</button>
+        </div>
+        
+      </div>
+      ) : (
+          <div>
+        react only
+        </div>
+      )
+
+    return (
+      <div>
+      {setup}
+      {isElectron}
+      </div>
     );
+    
   }
 }
 

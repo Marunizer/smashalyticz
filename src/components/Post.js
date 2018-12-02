@@ -5,22 +5,6 @@ import { deletePost} from '../actions/PostActions'
 
 class Post extends Component {
 
-    //was using this for an axios example, keeping to review
-    // state = {
-    //     post: null
-    // }
-    // componentDidMount(){
-    //     console.log(this.props)
-    //     let id = this.props.match.params.post_id;
-    //     axios.get('https://jsonplaceholder.typicode.com/posts/'+ id)
-    //     .then(res =>{
-    //         this.setState({
-    //             post: res.data
-    //         })  
-    //         console.log(res)
-    //     })
-    // }
-
     handleClick = () => {
         this.props.deletePost(this.props.posts.id)
         //re-direct to home page

@@ -39,25 +39,5 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
-    <div style="margin-left:40px" >
-      <p id="ready2">Version is up to date</p>
-      <button className="btn grey" id="ready" style="display: none;" onClick="ipcRenderer.send('quitAndInstall')">Click to Update</button>
-    </div>
-
-    <script>
-      const ipcRenderer = require('electron').ipcRenderer;
-      // wait for an updateReady message
-      ipcRenderer.on('updateReady', function(event, text) {
-          // change text and visibility of containers
-          var container = document.getElementById('ready');
-          container.innerHTML = "new version ready!";
-          container.style.display = "block";
-
-          var container2 = document.getElementById('ready2');
-          container2.innerHTML = "Update Available!";
-      })
-
-  </script>
-
   </body>
 </html>

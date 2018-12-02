@@ -10,7 +10,7 @@ const Navbar = () => {
     // }, 1500)
 
     return (//JSX
-        <nav className="nav-wrapper blue darken-4">
+        <nav className="nav-wrapper teal lighten-2">
             <div className="container">
                 <Link to="/" className="brand-logo right">Smasherz</Link>
                 <ul className="left">

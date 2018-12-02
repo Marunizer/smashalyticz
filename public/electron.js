@@ -86,6 +86,7 @@ function sendStatusToWindow(text) {
   win.webContents.send('message', text);
 }
 
+//THIS WILL NOT BE IN PROD, but keeping it in prod for testing, will eventually only be in dev mode
 function createDefaultWindow() {
   win = new BrowserWindow();
   win.webContents.openDevTools();
@@ -106,6 +107,7 @@ autoUpdater.on('update-available', (info) => {
   console.log('Version : ', info.version);
   console.log('Release Date: ', info.releaseDate);
   sendStatusToWindow('Update available.');
+  mainWindow.webContents.send('updateAvailable');
 })
 
 autoUpdater.on('update-not-available', (info) => {
@@ -134,6 +136,7 @@ autoUpdater.on('update-downloaded', (info) => {
 })
 
 ipcMain.on("quitAndInstall", (event, arg) => {
+ // autoUpdater.quitAndInstall(false, true);
   autoUpdater.quitAndInstall();
 })
 

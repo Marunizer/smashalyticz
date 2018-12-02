@@ -6,24 +6,6 @@ import {connect} from 'react-redux'
 
 class Home extends Component {
 
-    //could just use a fetch, but using axios instead
-    //mostly just here to show an example of fetching dynamic data from
-    //an endpoint using axios (: ) //THIS IS NOT WITH REDUX
-    // state = {
-    //     posts: [ ]
-    // }
-    // componentDidMount(){
-    //     //asynchronous, could take a couple seconds, cant control
-    //     axios.get('https://jsonplaceholder.typicode.com/posts')
-    //         .then(res => {
-    //              console.log(res)
-    //              this.setState({
-    //                  posts: res.data.slice(0,10) //slice only grabs desired range, instead of all
-    //              })
-    //         })
-    //     //this gives off a promise that the action will eventually be completed
-    // }
-
     render(){
         console.log(this.props);
 
