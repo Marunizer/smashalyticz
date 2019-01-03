@@ -24,12 +24,6 @@ but it should be functional
  to build on linux, 
     --> `"dist": "electron-builder --x64  --linux -c.extraMetadata.main=build/electron.js"`
 
-This works fine, but due to internet/remote building, this takes ages so I try to skip this
-
-### TODO
-    Look into : Delta updates to seemlessly patch app without needing to replace installation
-                using AWS s3 to host releases, github is pretty limited on a normal account
-
 ## Currently
 
 building using nsis-web in electron-updater allows for differential updates(delta), un-sure of its full effectiveness atm
